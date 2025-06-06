@@ -15,8 +15,8 @@ const HydrationBuddy: React.FC<HydrationBuddyProps> = ({ waterIntake, onWaterAdd
     toast.success(`Added ${amount}ml of water! 💧`);
   };
 
-  const totalLiters = waterIntake / 1000;
-  const fillPercentage = Math.min((waterIntake / 2000) * 100, 100); // Assuming 2L daily goal
+  const totalLiters = isNaN(waterIntake) ? 0 : waterIntake / 1000;
+  const fillPercentage = Math.min((totalLiters / 2) * 100, 100); // Assuming 2L daily goal
 
   return (
     <div className="bg-mint/10 rounded-xl p-4">
