@@ -13,10 +13,11 @@ interface DashboardProps {
   drinks: Drink[];
   onReset: () => void;
   waterIntake: number;
+  waterIntakeEvents: { amount: number; timestamp: number }[];
   onWaterAdd: (amount: number) => void;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ userProfile, drinks, onReset, waterIntake, onWaterAdd }) => {
+const Dashboard: React.FC<DashboardProps> = ({ userProfile, drinks, onReset, waterIntake, waterIntakeEvents, onWaterAdd }) => {
   const [bacResult, setBacResult] = useState<BACResult | null>(null);
   const [currentTime, setCurrentTime] = useState(Date.now());
 
@@ -101,7 +102,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userProfile, drinks, onReset, wat
         
         <div className="mb-6">
           <h3 className="text-lg font-semibold text-burgundy mb-2">Total Water Intake</h3>
-          <p className="text-gray-600">{waterIntake} ml</p>
+          <p className="text-gray-600">{isNaN(waterIntake) ? 0 : waterIntake} ml</p>
         </div>
         
         <div className="flex flex-wrap gap-4 mb-6">
@@ -132,7 +133,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userProfile, drinks, onReset, wat
         </button>
       </div>
       
-      <DrinkList drinks={drinks} waterIntake={waterIntake} />
+      <DrinkList drinks={drinks} waterIntake={waterIntake} waterIntakeEvents={waterIntakeEvents} />
     </div>
   );
 };
