@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { User, Ruler, Weight, Heart } from 'lucide-react';
 import { UserProfile } from '../types';
 import toast from 'react-hot-toast';
+import { Slider } from "@/components/ui/slider";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface ProfileFormProps {
   onSubmit: (profile: UserProfile) => void;
@@ -15,15 +17,26 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ onSubmit }) => {
     weight: 70,
     weightUnit: 'kg',
     gender: 'male',
-    tolerance: 'medium',
+    tolerance: 2, // Changed to number for slider
+    waterIntake: 0,
+    challengeModeEnabled: false,
+    streakDays: 0,
+    achievements: [],
+    friends: [],
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target as HTMLInputElement;
-    
+    const { name, value, type } = e.target;
     setProfile({
       ...profile,
       [name]: type === 'number' ? Number(value) : value,
+    });
+  };
+
+  const handleSliderChange = (value: number[]) => {
+    setProfile({
+      ...profile,
+      tolerance: value[0],
     });
   };
 
@@ -40,7 +53,20 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ onSubmit }) => {
       return;
     }
 
-    onSubmit(profile);
+    // Map tolerance number to string for consistency with other components
+    const toleranceMap: { [key: number]: 'low' | 'medium' | 'high' } = {
+      1: 'low',
+      2: 'low',
+      3: 'medium',
+      4: 'high',
+      5: 'high',
+    };
+    const finalProfile: UserProfile = {
+      ...profile,
+      tolerance: toleranceMap[profile.tolerance as number] || 'medium',
+    };
+
+    onSubmit(finalProfile);
     toast.success("Profile saved! Now let's track your drinks");
   };
 
@@ -130,46 +156,43 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ onSubmit }) => {
               <Heart size={18} className="mr-2" />
               Gender (optional)
             </label>
-            <select
-              name="gender"
-              value={profile.gender}
-              onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint focus:border-mint transition"
+            <Select
+              onValueChange={(value) => setProfile({ ...profile, gender: value })}
+              defaultValue={profile.gender}
             >
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
+              <SelectTrigger className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint focus:border-mint transition">
+                <SelectValue placeholder="Select gender" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="male">Male</SelectItem>
+                <SelectItem value="female">Female</SelectItem>
+                <SelectItem value="other">Other</SelectItem>
+                <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
+              </SelectContent>
+            </Select>
             <p className="text-xs text-gray-500">Helps with BAC calculation accuracy</p>
           </div>
         </div>
         
-        <div className="space-y-2">
+        <div className="space-y-3">
           <label className="flex items-center text-burgundy font-medium">
             <Heart size={18} className="mr-2" />
             Alcohol Tolerance (optional)
           </label>
-          <div className="flex flex-wrap gap-2">
-            {['low', 'medium', 'high'].map((level) => (
-              <label
-                key={level}
-                className={`flex-1 border rounded-lg p-3 text-center cursor-pointer transition-all ${
-                  profile.tolerance === level
-                    ? 'border-gold bg-gold/10 text-burgundy font-medium'
-                    : 'border-gray-300 hover:border-gray-400'
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="tolerance"
-                  value={level}
-                  checked={profile.tolerance === level}
-                  onChange={handleChange}
-                  className="sr-only"
-                />
-                {level.charAt(0).toUpperCase() + level.slice(1)}
-              </label>
-            ))}
+          <div className="px-2">
+            <Slider
+              value={[profile.tolerance as number]}
+              onValueChange={handleSliderChange}
+              max={5}
+              min={1}
+              step={1}
+              className="w-full"
+            />
+            <div className="flex justify-between text-xs text-gray-500 mt-1">
+              <span>Low</span>
+              <span>Average</span>
+              <span>High</span>
+            </div>
           </div>
         </div>
         
