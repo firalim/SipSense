@@ -1,5 +1,5 @@
 import React from 'react';
-import { WineGlass, User, Beer, GaugeCircle, Globe } from 'lucide-react';
+import { Wine, User, Beer, GaugeCircle, Globe } from 'lucide-react';
 import { UserProfile } from '../types';
 
 interface HeaderProps {
@@ -13,7 +13,7 @@ const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, userProfile 
     <header className="bg-burgundy text-cream py-4 shadow-md">
       <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
         <div className="flex items-center mb-4 md:mb-0">
-          <WineGlass size={32} className="text-gold mr-2" />
+          <Wine size={32} className="text-gold mr-2" />
           <h1 className="text-2xl font-bold">SipSense</h1>
         </div>
         
