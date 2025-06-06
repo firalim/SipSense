@@ -70,10 +70,13 @@ export const calculateBAC = (profile: UserProfile, drinks: Drink[], currentTime:
   for (const drink of drinks) {
     // Calculate initial BAC contribution from this drink
     const standardDrinks = calculateStandardDrinks(drink);
-    const weight = weightInKg(profile.weight, profile.weightUnit);
+    const weight = weightInKg(profile.weight, profile.weightUnit) * 1000; // Convert kg to grams
     
-    // BAC = [Standard drinks * 14 (g/drink)] / [Weight (kg) * Gender constant] * 100
-    const drinkBac = (standardDrinks * 14) / (weight * genderData.factor) * 100 * toleranceFactor;
+    // BAC = [Standard drinks * 14 (g/drink)] / [Weight (g) * Gender constant] * 100
+    // Corrected: Use pure alcohol grams directly instead of standard drinks * 14
+    const volumeInMl = drink.volumeUnit === 'ml' ? drink.volume : drink.volume * 29.5735;
+    const pureAlcoholGrams = volumeInMl * (drink.abv / 100) * 0.789;
+    const drinkBac = (pureAlcoholGrams / (weight * genderData.factor)) * 100 * toleranceFactor;
     
     // Calculate how much of this drink's BAC has been metabolized
     const hoursSinceDrink = (currentTime - drink.timestamp) / (60 * 60 * 1000);
