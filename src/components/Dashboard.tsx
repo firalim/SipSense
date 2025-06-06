@@ -5,14 +5,18 @@ import { calculateBAC, getRecommendation } from '../utils/alcoholCalculator';
 import BACGauge from './BACGauge';
 import DrinkList from './DrinkList';
 import SoberCountdown from './SoberCountdown';
+import HangoverForecast from './HangoverForecast';
+import HydrationBuddy from './HydrationBuddy';
 
 interface DashboardProps {
   userProfile: UserProfile;
   drinks: Drink[];
   onReset: () => void;
+  waterIntake: number;
+  onWaterAdd: (amount: number) => void;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ userProfile, drinks, onReset }) => {
+const Dashboard: React.FC<DashboardProps> = ({ userProfile, drinks, onReset, waterIntake, onWaterAdd }) => {
   const [bacResult, setBacResult] = useState<BACResult | null>(null);
   const [currentTime, setCurrentTime] = useState(Date.now());
 
@@ -86,6 +90,16 @@ const Dashboard: React.FC<DashboardProps> = ({ userProfile, drinks, onReset }) =
             </div>
           </div>
         )}
+        
+        {bacResult && (
+          <div className="mb-6">
+            <HangoverForecast risk={bacResult.hangoverRisk} />
+          </div>
+        )}
+        
+        <div className="mb-6">
+          <HydrationBuddy waterIntake={waterIntake} onWaterAdd={onWaterAdd} />
+        </div>
         
         <div className="flex flex-wrap gap-4 mb-6">
           <div className="bg-mint/10 rounded-lg p-4 flex-1 min-w-[200px]">
