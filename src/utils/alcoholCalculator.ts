@@ -1,4 +1,5 @@
 import { UserProfile, Drink, BACResult } from '../types';
+import { getRecommendation } from './bacCalculator'; // Import getRecommendation
 
 // Constants for BAC calculation
 const GENDER_CONSTANTS = {
@@ -96,7 +97,7 @@ export const calculateBAC = (profile: UserProfile, drinks: Drink[], currentTime:
   // Get recommendation and hangover risk
   return {
     bac: totalBac,
-    ...getRecommendation(totalBac),
+    recommendation: getRecommendation(totalBac), // Use imported getRecommendation
     soberTime,
     hangoverRisk: getHangoverRisk(totalBac)
   };
