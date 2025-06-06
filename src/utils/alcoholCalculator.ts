@@ -7,6 +7,13 @@ const GENDER_CONSTANTS = {
   other: { factor: 0.615, metabolismRate: 0.016 } // Average of male and female
 };
 
+// Interface for HangoverRisk
+interface HangoverRisk {
+  level: 'low' | 'moderate' | 'high';
+  message: string;
+  emoji: string;
+}
+
 // Convert weight to kilograms if needed
 const weightInKg = (weight: number, unit: 'kg' | 'lbs'): number => {
   return unit === 'kg' ? weight : weight * 0.453592;
@@ -23,6 +30,29 @@ const calculateStandardDrinks = (drink: Drink): number => {
   
   // Standard drink is typically defined as 14 grams of pure alcohol
   return pureAlcohol / 14;
+};
+
+// Get hangover risk based on BAC level
+export const getHangoverRisk = (bac: number): HangoverRisk => {
+  if (bac < 0.05) {
+    return {
+      level: 'low',
+      message: 'Minimal hangover risk. Stay hydrated!',
+      emoji: '😊'
+    };
+  } else if (bac < 0.1) {
+    return {
+      level: 'moderate',
+      message: 'Moderate hangover risk. Drink water and rest.',
+      emoji: '😴'
+    };
+  } else {
+    return {
+      level: 'high',
+      message: 'High hangover risk. Prioritize hydration and food.',
+      emoji: '🤢'
+    };
+  }
 };
 
 // Calculate BAC based on Widmark formula with adjustments
@@ -60,11 +90,12 @@ export const calculateBAC = (profile: UserProfile, drinks: Drink[], currentTime:
   // Calculate time until sober (in minutes)
   const soberTime = totalBac > 0 ? Math.ceil((totalBac / genderData.metabolismRate) * 60) : 0;
   
-  // Get recommendation based on BAC level
+  // Get recommendation and hangover risk
   return {
     bac: totalBac,
     ...getRecommendation(totalBac),
-    soberTime
+    soberTime,
+    hangoverRisk: getHangoverRisk(totalBac)
   };
 };
 
