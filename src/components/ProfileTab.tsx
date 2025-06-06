@@ -29,7 +29,6 @@ const ProfileTab = ({
   streak, 
   currentBAC 
 }: ProfileTabProps) => {
-  
   const getHangoverRisk = () => {
     if (currentBAC <= 0.03) return { level: "low", emoji: "🟢", text: "No risk - you're golden!" };
     if (currentBAC <= 0.08) return { level: "mild", emoji: "🟡", text: "Mild risk - hydrate and slow down" };
