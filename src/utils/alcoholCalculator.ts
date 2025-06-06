@@ -101,23 +101,3 @@ export const calculateBAC = (profile: UserProfile, drinks: Drink[], currentTime:
     hangoverRisk: getHangoverRisk(totalBac)
   };
 };
-
-// Get recommendation based on BAC level
-export const getRecommendation = (bac: number): Pick<BACResult, 'recommendation' | 'message'> => {
-  if (bac < 0.04) {
-    return {
-      recommendation: 'good',
-      message: "You're good to go! 🍸"
-    };
-  } else if (bac < 0.08) {
-    return {
-      recommendation: 'moderate',
-      message: "Go easy, friend 🍃"
-    };
-  } else {
-    return {
-      recommendation: 'caution',
-      message: "Time to sip water 💧"
-    };
-  }
-};
