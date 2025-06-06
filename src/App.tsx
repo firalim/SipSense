@@ -10,7 +10,7 @@ import DrinkDiscovery from './components/DrinkDiscovery';
 import GamificationTab from './components/GamificationTab';
 import JournalTab from './components/JournalTab';
 import ProfileTab from './components/ProfileTab';
-import { UserProfile, Drink } from './types';
+import { UserProfile, Drink, BACResult } from './types';
 import ErrorBoundary from './components/ErrorBoundary';
 import { calculateBAC } from './utils/alcoholCalculator';
 import { getRecommendation, getTimeToSober } from './utils/bacCalculator';
@@ -73,7 +73,8 @@ function App() {
       return <ProfileForm onSubmit={handleProfileSubmit} />;
     }
 
-    const currentBAC = currentDrinks.length > 0 ? calculateBAC(userProfile, currentDrinks, Date.now()).bac : 0;
+    const bacResult: BACResult = currentDrinks.length > 0 ? calculateBAC(userProfile, currentDrinks, Date.now()) : { bac: 0, recommendation: "good", soberTime: 0, hangoverRisk: { level: "low", message: "", emoji: "" } };
+    const currentBAC = bacResult.bac;
     const waterIntake = userProfile.waterIntake || 0;
     const streak = userProfile.streakDays || 0;
 
