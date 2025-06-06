@@ -5,25 +5,25 @@ export interface UserProfile {
   heightUnit: 'cm' | 'ft';
   weight: number;
   weightUnit: 'kg' | 'lbs';
-  gender?: 'male' | 'female' | 'other';
-  tolerance?: 'low' | 'medium' | 'high';
-  waterIntake: number; // in ml
-  challengeModeEnabled: boolean;
-  streakDays: number;
-  achievements: Achievement[];
-  friends: Friend[];
+  gender: 'male' | 'female' | 'other' | 'prefer-not-to-say';
+  tolerance: 'low' | 'medium' | 'high' | number;
+  waterIntake?: number; // in ml, optional to match existing usage
+  challengeModeEnabled?: boolean;
+  streakDays?: number;
+  achievements?: Achievement[];
+  friends?: Friend[];
 }
 
 // Drink types
 export interface Drink {
-  id: string;
+  id?: string; // Optional to match existing usage
   type: string;
   brand: string;
   abv: number; // Alcohol by volume (%)
   volume: number; // in milliliters
   volumeUnit: 'ml' | 'oz';
   price?: number;
-  currency?: string;
+  currency?: 'USD' | 'EUR' | 'GBP';
   country?: string;
   timestamp: number; // When the drink was added
   flavorProfile?: FlavorProfile;
