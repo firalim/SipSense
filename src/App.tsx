@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
-import { WineGlass } from 'lucide-react';
+import { Wine } from 'lucide-react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ProfileForm from './components/ProfileForm';
