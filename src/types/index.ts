@@ -7,6 +7,11 @@ export interface UserProfile {
   weightUnit: 'kg' | 'lbs';
   gender?: 'male' | 'female' | 'other';
   tolerance?: 'low' | 'medium' | 'high';
+  waterIntake: number; // in ml
+  challengeModeEnabled: boolean;
+  streakDays: number;
+  achievements: Achievement[];
+  friends: Friend[];
 }
 
 // Drink types
@@ -21,6 +26,7 @@ export interface Drink {
   currency?: string;
   country?: string;
   timestamp: number; // When the drink was added
+  flavorProfile?: FlavorProfile;
 }
 
 // BAC (Blood Alcohol Content) result
@@ -29,6 +35,7 @@ export interface BACResult {
   recommendation: 'good' | 'moderate' | 'caution';
   message: string;
   soberTime: number; // Minutes until sober
+  hangoverRisk: HangoverRisk;
 }
 
 // Drink Explorer types
@@ -45,4 +52,62 @@ export interface DrinkBrand {
   logo: string;
   country: string;
   types: string[];
+}
+
+// New types for enhanced features
+export interface HangoverRisk {
+  level: 'none' | 'mild' | 'moderate' | 'severe';
+  message: string;
+  emoji: string;
+}
+
+export interface Achievement {
+  id: string;
+  name: string;
+  description: string;
+  emoji: string;
+  unlockedAt?: number;
+}
+
+export interface Friend {
+  id: string;
+  name: string;
+  avatar: string;
+  recentDrinks: Drink[];
+  mindfulScore: number;
+}
+
+export interface FlavorProfile {
+  sweet: number;
+  bitter: number;
+  fruity: number;
+  light: number;
+}
+
+export interface WaterLog {
+  id: string;
+  volume: number;
+  timestamp: number;
+}
+
+export interface PartyPlan {
+  id: string;
+  date: number;
+  location: string;
+  plannedDrinks: PlannedDrink[];
+  estimatedBAC: number[];
+  timeframes: number[];
+}
+
+export interface PlannedDrink {
+  type: string;
+  count: number;
+  timeframe: [number, number]; // Start and end time in minutes from party start
+}
+
+export interface AiResponse {
+  message: string;
+  suggestion?: string;
+  action?: 'drink_water' | 'take_break' | 'eat_food' | 'call_ride';
+  emoji: string;
 }
