@@ -17,7 +17,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ onSubmit }) => {
     weight: 70,
     weightUnit: 'kg',
     gender: 'male',
-    tolerance: 2, // Changed to number for slider
+    tolerance: 2, // Number for slider
     waterIntake: 0,
     challengeModeEnabled: false,
     streakDays: 0,
