@@ -8,14 +8,31 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, Users, DollarSign, MapPin } from "lucide-react";
-import MapTheHangout from './MapTheHangout';
-import SipStoryAI from './SipStoryAI';
 
 interface DrinkDiscoveryProps {
   drinks?: any[];
   currentBAC?: number;
   waterIntake?: number;
 }
+
+// Mock placeholders for missing components
+const MapTheHangout = () => (
+  <div className="text-center p-8 border-2 border-dashed border-gray-300 rounded-lg">
+    <div className="text-4xl mb-2">🗺️</div>
+    <h3 className="font-medium mb-1">Map The Hangout</h3>
+    <p className="text-sm text-gray-600">Coming soon! Find nearby places to hang out.</p>
+  </div>
+);
+
+const SipStoryAI = ({ drinks, currentBAC, waterIntake }: { drinks: any[]; currentBAC: number; waterIntake: number }) => (
+  <div className="text-center p-8 border-2 border-dashed border-gray-300 rounded-lg">
+    <div className="text-4xl mb-2">📖</div>
+    <h3 className="font-medium mb-1">Sip Story AI</h3>
+    <p className="text-sm text-gray-600">
+      Coming soon! Generate stories based on your drinks (count: {drinks.length}), BAC ({currentBAC.toFixed(3)}), and water intake ({waterIntake} ml).
+    </p>
+  </div>
+);
 
 const DrinkDiscovery = ({ drinks = [], currentBAC = 0, waterIntake = 0 }: DrinkDiscoveryProps) => {
   const [budgetRange, setBudgetRange] = useState("");
