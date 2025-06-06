@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { RefreshCw, Clock, Droplet } from 'lucide-react';
+import { RefreshCw, Clock, Droplet, Beer } from 'lucide-react';
 import { UserProfile, Drink, BACResult } from '../types';
-import { calculateBAC, getRecommendation } from '../utils/alcoholCalculator';
+import { calculateBAC } from '../utils/alcoholCalculator';
 import BACGauge from './BACGauge';
 import DrinkList from './DrinkList';
 import SoberCountdown from './SoberCountdown';
@@ -91,11 +91,9 @@ const Dashboard: React.FC<DashboardProps> = ({ userProfile, drinks, onReset, wat
           </div>
         )}
         
-        {bacResult && (
-          <div className="mb-6">
-            <HangoverForecast risk={bacResult.hangoverRisk} />
-          </div>
-        )}
+        <div className="mb-6">
+          <HangoverForecast risk={bacResult?.hangoverRisk} />
+        </div>
         
         <div className="mb-6">
           <HydrationBuddy waterIntake={waterIntake} onWaterAdd={onWaterAdd} />
