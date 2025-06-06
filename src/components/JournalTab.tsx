@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import DrinkInput from "./DrinkInput";
 import BACAnalysis from "./BACAnalysis";
 import { MessageSquare, Calendar, Droplets, Clock } from "lucide-react";
-import { getRecommendation, getTimeToSober } from "@/utils/bacCalculator";
+import { getRecommendation, getTimeToSober } from "../utils/bacCalculator";
 
 interface JournalTabProps {
   profile: any;
@@ -50,7 +50,7 @@ const JournalTab = ({
     } else if (chatMessage.toLowerCase().includes("water")) {
       avaResponse = "Great thinking! Water is your best friend tonight. Keep it up! 💪";
     } else {
-      avaResponse = "Based on your current state, I'd recommend pacing yourself. Maybe a light beer or wine spritzer next? 🍷";
+      avaResponse = `Based on your current state, I'd recommend pacing yourself. Maybe a ${getRecommendation(currentBAC)} next? 🍷`;
     }
 
     newHistory.push({ sender: "ava", message: avaResponse });
@@ -62,6 +62,8 @@ const JournalTab = ({
     alert("Water reminder set! I'll ping you in 30 minutes 💧");
   };
 
+  const timeToSober = getTimeToSober(currentBAC, profile); // Calculate sober time
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Current Session */}
@@ -72,7 +74,7 @@ const JournalTab = ({
           <BACAnalysis 
             bac={currentBAC}
             recommendation={getRecommendation(currentBAC)}
-            timeToSober={getTimeToSober(currentBAC)}
+            timeToSober={timeToSober}
           />
         )}
       </div>
