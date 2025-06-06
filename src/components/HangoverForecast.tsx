@@ -3,33 +3,45 @@ import { Cloud, AlertTriangle } from 'lucide-react';
 import { HangoverRisk } from '../types';
 
 interface HangoverForecastProps {
-  risk: HangoverRisk;
+  risk: HangoverRisk | undefined;
 }
 
 const HangoverForecast: React.FC<HangoverForecastProps> = ({ risk }) => {
+  if (!risk) {
+    return (
+      <div className="rounded-xl p-4 bg-gray-100">
+        <h3 className="font-semibold text-burgundy flex items-center">
+          <Cloud size={20} className="mr-2" />
+          Hangover Forecast
+        </h3>
+        <p className="text-sm text-gray-600">No hangover risk data available.</p>
+      </div>
+    );
+  }
+
   const getBgColor = () => {
     switch (risk.level) {
-      case 'none':
+      case 'low':
         return 'bg-green-100';
-      case 'mild':
-        return 'bg-yellow-100';
       case 'moderate':
         return 'bg-orange-100';
-      case 'severe':
+      case 'high':
         return 'bg-red-100';
+      default:
+        return 'bg-gray-100';
     }
   };
 
   const getTextColor = () => {
     switch (risk.level) {
-      case 'none':
+      case 'low':
         return 'text-green-700';
-      case 'mild':
-        return 'text-yellow-700';
       case 'moderate':
         return 'text-orange-700';
-      case 'severe':
+      case 'high':
         return 'text-red-700';
+      default:
+        return 'text-gray-700';
     }
   };
 
@@ -49,14 +61,13 @@ const HangoverForecast: React.FC<HangoverForecastProps> = ({ risk }) => {
       </div>
       
       <div className="mt-4 flex space-x-1">
-        {['none', 'mild', 'moderate', 'severe'].map((level) => (
+        {['low', 'moderate', 'high'].map((level) => (
           <div
             key={level}
             className={`h-2 flex-1 rounded-full ${
               risk.level === level ? 'opacity-100' : 'opacity-30'
             } ${
-              level === 'none' ? 'bg-green-500' :
-              level === 'mild' ? 'bg-yellow-500' :
+              level === 'low' ? 'bg-green-500' :
               level === 'moderate' ? 'bg-orange-500' :
               'bg-red-500'
             }`}
