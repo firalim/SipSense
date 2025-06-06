@@ -12,5 +12,11 @@
   "aliases": {
     "components": "@/components/ui",
     "utils": "@/lib/utils"
+  },
+  "files": {
+    "components": {
+      "server": "server-components",
+      "client": "client-components"
+    }
   }
 }
