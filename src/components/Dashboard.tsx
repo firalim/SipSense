@@ -99,6 +99,11 @@ const Dashboard: React.FC<DashboardProps> = ({ userProfile, drinks, onReset, wat
           <HydrationBuddy waterIntake={waterIntake} onWaterAdd={onWaterAdd} />
         </div>
         
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold text-burgundy mb-2">Total Water Intake</h3>
+          <p className="text-gray-600">{waterIntake} ml</p>
+        </div>
+        
         <div className="flex flex-wrap gap-4 mb-6">
           <div className="bg-mint/10 rounded-lg p-4 flex-1 min-w-[200px]">
             <h3 className="text-burgundy font-medium mb-2 flex items-center">
@@ -127,7 +132,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userProfile, drinks, onReset, wat
         </button>
       </div>
       
-      <DrinkList drinks={drinks} />
+      <DrinkList drinks={drinks} waterIntake={waterIntake} />
     </div>
   );
 };
