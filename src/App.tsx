@@ -11,7 +11,18 @@ import { UserProfile, Drink } from './types';
 
 function App() {
   const [currentTab, setCurrentTab] = useState<'profile' | 'drink' | 'dashboard' | 'explorer'>('profile');
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>({
+    age: 0,
+    weight: 0,
+    weightUnit: 'kg',
+    gender: 'other',
+    tolerance: 'normal',
+    waterIntake: 0,
+    challengeModeEnabled: false,
+    streakDays: 0,
+    achievements: [],
+    friends: []
+  });
   const [currentDrinks, setCurrentDrinks] = useState<Drink[]>([]);
 
   const handleProfileSubmit = (profile: UserProfile) => {
@@ -22,6 +33,15 @@ function App() {
   const handleAddDrink = (drink: Drink) => {
     setCurrentDrinks([...currentDrinks, drink]);
     setCurrentTab('dashboard');
+  };
+
+  const handleWaterAdd = (amount: number) => {
+    if (userProfile) {
+      setUserProfile({
+        ...userProfile,
+        waterIntake: userProfile.waterIntake + amount
+      });
+    }
   };
 
   const handleReset = () => {
@@ -42,7 +62,13 @@ function App() {
         );
       case 'dashboard':
         return userProfile ? (
-          <Dashboard userProfile={userProfile} drinks={currentDrinks} onReset={handleReset} />
+          <Dashboard 
+            userProfile={userProfile} 
+            drinks={currentDrinks} 
+            onReset={handleReset}
+            waterIntake={userProfile.waterIntake}
+            onWaterAdd={handleWaterAdd}
+          />
         ) : (
           <div className="text-center">
             Please complete your profile first.
