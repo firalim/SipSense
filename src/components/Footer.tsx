@@ -1,5 +1,5 @@
 import React from 'react';
-import { WineGlass, Heart } from 'lucide-react';
+import { Wine, Heart } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center mb-4 md:mb-0">
-            <WineGlass size={24} className="text-gold mr-2" />
+            <Wine size={24} className="text-gold mr-2" />
             <span className="text-xl font-bold">SipSense</span>
           </div>
           
