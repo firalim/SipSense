@@ -8,6 +8,7 @@ import DrinkInput from './components/DrinkInput';
 import Dashboard from './components/Dashboard';
 import DrinkExplorer from './components/DrinkExplorer';
 import { UserProfile, Drink } from './types';
+import ErrorBoundary from './components/ErrorBoundary';
 
 function App() {
   const [currentTab, setCurrentTab] = useState<'profile' | 'drink' | 'dashboard' | 'explorer'>('profile');
@@ -24,6 +25,7 @@ function App() {
     friends: []
   });
   const [currentDrinks, setCurrentDrinks] = useState<Drink[]>([]);
+  const [waterIntakeEvents, setWaterIntakeEvents] = useState<{ amount: number; timestamp: number }[]>([]);
 
   const handleProfileSubmit = (profile: UserProfile) => {
     setUserProfile(profile);
@@ -37,15 +39,24 @@ function App() {
 
   const handleWaterAdd = (amount: number) => {
     if (userProfile) {
+      const newWaterIntake = (userProfile.waterIntake || 0) + amount;
       setUserProfile({
         ...userProfile,
-        waterIntake: userProfile.waterIntake + amount
+        waterIntake: newWaterIntake
       });
+      setWaterIntakeEvents([...waterIntakeEvents, { amount, timestamp: Date.now() }]);
     }
   };
 
   const handleReset = () => {
     setCurrentDrinks([]);
+    setWaterIntakeEvents([]);
+    if (userProfile) {
+      setUserProfile({
+        ...userProfile,
+        waterIntake: 0
+      });
+    }
   };
 
   const renderContent = () => {
@@ -62,13 +73,16 @@ function App() {
         );
       case 'dashboard':
         return userProfile ? (
-          <Dashboard 
-            userProfile={userProfile} 
-            drinks={currentDrinks} 
-            onReset={handleReset}
-            waterIntake={userProfile.waterIntake}
-            onWaterAdd={handleWaterAdd}
-          />
+          <ErrorBoundary>
+            <Dashboard 
+              userProfile={userProfile} 
+              drinks={currentDrinks} 
+              onReset={handleReset}
+              waterIntake={userProfile.waterIntake || 0}
+              waterIntakeEvents={waterIntakeEvents}
+              onWaterAdd={handleWaterAdd}
+            />
+          </ErrorBoundary>
         ) : (
           <div className="text-center">
             Please complete your profile first.
